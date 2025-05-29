@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo Mestre - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-additional.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Cabeçalho e Navegação Principal -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="logo.png" alt="Protocolo Mestre" class="logo">
+                <h1>Protocolo Mestre</h1>
+            </div>
+            <div class="user-stats">
+                <div class="streak">
+                    <i class="fas fa-fire"></i>
+                    <span>7 dias</span>
+                </div>
+                <div class="xp-total">
+                    <span>475/500 XP</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Painel do Herói -->
+            <section class="hero-panel">
+                <div class="hero-info">
+                    <div class="hero-avatar">
+                        <i class="fas fa-chess-king"></i>
+                    </div>
+                    <div class="hero-details">
+                        <h2>Marcus, o Estrategista</h2>
+                        <p class="hero-level">Nível: Mestre</p>
+                        <div class="next-level">
+                            <span>Próximo Nível: 25 XP</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="elements-grid">
+                    <div class="element fire">
+                        <i class="fas fa-fire"></i>
+                        <h3>Fogo</h3>
+                        <div class="element-value">85</div>
+                    </div>
+                    <div class="element earth">
+                        <i class="fas fa-mountain"></i>
+                        <h3>Terra</h3>
+                        <div class="element-value">70</div>
+                    </div>
+                    <div class="element water">
+                        <i class="fas fa-water"></i>
+                        <h3>Água</h3>
+                        <div class="element-value">65</div>
+                    </div>
+                    <div class="element air">
+                        <i class="fas fa-wind"></i>
+                        <h3>Ar</h3>
+                        <div class="element-value">91</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mapa da Jornada do Herói -->
+            <section class="hero-journey" style="background-image: url('images/mountain.jpg'); background-size: cover; background-position: center; background-blend-mode: overlay;">
+                <h2>Mapa da Jornada do Herói</h2>
+                <div class="journey-trail">
+                    <div class="journey-map">
+                        <div class="journey-step completed">
+                            <div class="step-icon">
+                                <i class="fas fa-door-open"></i>
+                            </div>
+                            <h3>Chamado à Aventura</h3>
+                            <span class="step-status">Completo</span>
+                            <div class="step-details">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step completed">
+                            <div class="step-icon">
+                                <i class="fas fa-archway"></i>
+                            </div>
+                            <h3>Travessia do Portal</h3>
+                            <span class="step-status">Completo</span>
+                            <div class="step-details">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step in-progress">
+                            <div class="step-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h3>Encontro com o Mentor</h3>
+                            <span class="step-status">Em Progresso</span>
+                            <div class="step-details">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step locked">
+                            <div class="step-icon">
+                                <i class="fas fa-hammer"></i>
+                            </div>
+                            <h3>Forja do Caráter</h3>
+                            <span class="step-status">Bloqueado</span>
+                            <div class="step-details">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step locked">
+                            <div class="step-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h3>Pareto Digital</h3>
+                            <span class="step-status">Bloqueado</span>
+                            <div class="step-details">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step locked">
+                            <div class="step-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h3>Diagrama de Dispersão</h3>
+                            <span class="step-status">Bloqueado</span>
+                            <div class="step-details">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step locked">
+                            <div class="step-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h3>Retorno com o Elixir</h3>
+                            <span class="step-status">Bloqueado</span>
+                            <div class="step-details">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="journey-step locked">
+                            <div class="step-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>Ciclo Contínuo</h3>
+                            <span class="step-status">Bloqueado</span>
+                            <div class="step-details">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="journey-trail-path"></div>
+                </div>
+                <div class="journey-legend">
+                    <div class="legend-item">
+                        <div class="legend-color legend-completed"></div>
+                        <span>Completo</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-progress"></div>
+                        <span>Em Progresso</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-locked"></div>
+                        <span>Bloqueado</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seções Inferiores -->
+            <div class="bottom-sections">
+                <!-- Missões do Dia -->
+                <section class="daily-missions">
+                    <h2>Missões do Dia</h2>
+                    <div class="mission-card">
+                        <div class="mission-header">
+                            <h3>Reflexão Matinal</h3>
+                            <span class="mission-xp">+25 XP</span>
+                        </div>
+                        <p>Escreva 3 reflexões no seu diário digital</p>
+                        <div class="mission-footer">
+                            <span class="mission-element water">
+                                <i class="fas fa-water"></i> Elemento Água
+                            </span>
+                            <button class="btn-start">Iniciar</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Oráculo do Velho Sábio -->
+                <section class="sage-oracle">
+                    <h2>Oráculo do Velho Sábio</h2>
+                    <div class="oracle-message">
+                        <div class="sage-avatar">
+                            <img src="images/velho-sabio.webp" alt="Velho Sábio" class="sage-image">
+                        </div>
+                        <blockquote>
+                            "Jovem herói, observo que seu elemento Terra precisa de atenção. Que tal criar um ritual matinal estruturado?"
+                        </blockquote>
+                        <div class="daily-wisdom">
+                            <i class="fas fa-lightbulb"></i>
+                            <p>Dica do Dia: "A disciplina é a ponte entre objetivos e conquistas." - Jim Rohn</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Visualização de Progresso -->
+            <section class="progress-visualization">
+                <h2><i class="fas fa-chart-line"></i> Seu Progresso</h2>
+                <div class="charts-container">
+                    <div class="chart radar-chart">
+                        <h3><i class="fas fa-balance-scale"></i> Equilíbrio dos Elementos</h3>
+                        <div class="chart-placeholder">
+                            <!-- Radar Chart Placeholder -->
+                            <div class="radar-placeholder"></div>
+                            <div class="chart-labels">
+                                <span class="chart-label fire-label">Fogo</span>
+                                <span class="chart-label earth-label">Terra</span>
+                                <span class="chart-label water-label">Água</span>
+                                <span class="chart-label air-label">Ar</span>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-line"></span>
+                                <span>Atual</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-line dashed"></span>
+                                <span>Meta</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart line-chart">
+                        <h3><i class="fas fa-trophy"></i> Evolução de XP</h3>
+                        <div class="chart-placeholder">
+                            <!-- Line Chart Placeholder -->
+                            <div class="line-placeholder"></div>
+                            <div class="chart-markers">
+                                <span class="chart-marker" style="left: 20%"><i class="fas fa-star"></i></span>
+                                <span class="chart-marker" style="left: 60%"><i class="fas fa-medal"></i></span>
+                            </div>
+                        </div>
+                        <div class="chart-timeline">
+                            <span>Seg</span>
+                            <span>Ter</span>
+                            <span>Qua</span>
+                            <span>Qui</span>
+                            <span>Sex</span>
+                            <span>Sáb</span>
+                            <span>Dom</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flowchart">
+                    <h3><i class="fas fa-project-diagram"></i> Fluxo de Progresso</h3>
+                    <div class="flowchart-container">
+                        <div class="flow-node">
+                            <i class="fas fa-tasks"></i>
+                            <span>Missões</span>
+                        </div>
+                        <div class="flow-arrow">
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                        </div>
+                        <div class="flow-node">
+                            <i class="fas fa-star"></i>
+                            <span>XP</span>
+                        </div>
+                        <div class="flow-arrow">
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                        </div>
+                        <div class="flow-node">
+                            <i class="fas fa-level-up-alt"></i>
+                            <span>Nível</span>
+                        </div>
+                        <div class="flow-arrow">
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                        </div>
+                        <div class="flow-node">
+                            <i class="fas fa-unlock"></i>
+                            <span>Desbloqueios</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conquistas e Recompensas -->
+            <section class="achievements">
+                <h2>Conquistas</h2>
+                <div class="badges-container">
+                    <div class="badge earned">
+                        <i class="fas fa-medal"></i>
+                        <span>Guardião do Silêncio</span>
+                    </div>
+                    <div class="badge earned">
+                        <i class="fas fa-scroll"></i>
+                        <span>Escriba Diligente</span>
+                    </div>
+                    <div class="badge locked">
+                        <i class="fas fa-crown"></i>
+                        <span>Mestre do Foco</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Biblioteca de Ebooks -->
+            <section class="ebooks-section">
+                <h2>Biblioteca de Ebooks</h2>
+                <div class="ebooks-grid">
+                    <div class="ebook-card">
+                        <div class="ebook-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="ebook-title">Guia do Protocolo Mestre</h3>
+                        <p class="ebook-description">Manual completo com todas as etapas da jornada</p>
+                        <a href="#" class="btn-access">Acessar</a>
+                    </div>
+                    <div class="ebook-card">
+                        <div class="ebook-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="ebook-title">Neurociência do Foco</h3>
+                        <p class="ebook-description">Como treinar seu cérebro para alta performance</p>
+                        <a href="#" class="btn-access">Acessar</a>
+                    </div>
+                    <div class="ebook-card">
+                        <div class="ebook-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3 class="ebook-title">Equilíbrio dos Elementos</h3>
+                        <p class="ebook-description">Técnicas para harmonizar os 4 elementos em sua vida</p>
+                        <a href="#" class="btn-access">Acessar</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">Recursos</a>
+                <a href="#">Suporte</a>
+                <a href="#">Sobre</a>
+            </div>
+            <div class="footer-info">
+                <p>Protocolo Mestre v1.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
