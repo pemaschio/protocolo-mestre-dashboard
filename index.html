@@ -1,6 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR"><!-- Adicionar antes da tag </head> -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script><!-- Adicionar antes da tag </head> -->
+<script>
+    // Verificar se o usuário está autenticado
+    window.addEventListener('DOMContentLoaded', async ( ) => {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+            // Usuário não está logado, redirecionar para a página de login
+            window.location.href = 'login.html';
+        }
+    });
+</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
