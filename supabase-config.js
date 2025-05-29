@@ -1,3 +1,3 @@
-const SUPABASE_URL = 'sua_url_do_supabase';
-const SUPABASE_ANON_KEY = 'sua_chave_anon_do_supabase';
+const SUPABASE_URL = 'https://supabase.com/dashboard/project/dzwnapxqzbzkgyfuosmx/settings/api-keys';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
