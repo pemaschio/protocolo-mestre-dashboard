@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* Estilos CSS mantidos iguais */
         :root {
             --gold: #E9C46A;
             --orange: #F4A261;
@@ -177,9 +178,9 @@
                 <label for="password">Senha</label>
                 <input type="password" id="password" placeholder="Sua senha">
             </div>
-            <button id="login-button">Entrar</button>
+            <button onclick="login()">Entrar</button>
             <div class="toggle-form">
-                Não tem uma conta? <a id="show-signup">Cadastre-se</a>
+                Não tem uma conta? <a href="#" onclick="showSignup(); return false;">Cadastre-se</a>
             </div>
         </div>
         
@@ -196,9 +197,9 @@
                 <label for="signup-password">Senha</label>
                 <input type="password" id="signup-password" placeholder="Crie uma senha">
             </div>
-            <button id="signup-button">Cadastrar</button>
+            <button onclick="signup()">Cadastrar</button>
             <div class="toggle-form">
-                Já tem uma conta? <a id="show-login">Faça login</a>
+                Já tem uma conta? <a href="#" onclick="showLogin(); return false;">Faça login</a>
             </div>
         </div>
         
@@ -214,164 +215,139 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
         const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
         
-        // Elementos do DOM
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const showSignupLink = document.getElementById('show-signup');
-        const showLoginLink = document.getElementById('show-login');
-        const loginButton = document.getElementById('login-button');
-        const signupButton = document.getElementById('signup-button');
-        const errorMessage = document.getElementById('error-message');
-        const successMessage = document.getElementById('success-message');
-        
-        // Verificar se os elementos existem antes de adicionar event listeners
-        if (showSignupLink) {
-            showSignupLink.addEventListener('click', function() {
-                console.log('Clicou em Cadastre-se');
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-            });
-        } else {
-            console.error('Elemento show-signup não encontrado');
+        // Funções para alternar entre formulários
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+            console.log('Mostrando formulário de cadastro');
         }
         
-        if (showLoginLink) {
-            showLoginLink.addEventListener('click', function() {
-                console.log('Clicou em Faça login');
-                signupForm.style.display = 'none';
-                loginForm.style.display = 'block';
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-            });
-        } else {
-            console.error('Elemento show-login não encontrado');
+        function showLogin() {
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+            console.log('Mostrando formulário de login');
         }
         
         // Função de login
-        if (loginButton) {
-            loginButton.addEventListener('click', async function() {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showError('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            try {
+                console.log('Tentando fazer login com:', email);
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
                 
-                if (!email || !password) {
-                    showError('Por favor, preencha todos os campos.');
-                    return;
+                if (error) {
+                    console.error('Erro de login:', error);
+                    throw error;
                 }
                 
-                try {
-                    console.log('Tentando fazer login com:', email);
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email,
-                        password
-                    });
-                    
-                    if (error) {
-                        console.error('Erro de login:', error);
-                        throw error;
-                    }
-                    
-                    // Login bem-sucedido
-                    showSuccess('Login realizado com sucesso! Redirecionando...');
-                    console.log('Login bem-sucedido:', data);
-                    
-                    // Redirecionar para o dashboard após 1 segundo
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1000);
-                    
-                } catch (error) {
-                    showError('Erro ao fazer login: ' + error.message);
-                }
-            });
-        } else {
-            console.error('Elemento login-button não encontrado');
+                // Login bem-sucedido
+                showSuccess('Login realizado com sucesso! Redirecionando...');
+                console.log('Login bem-sucedido:', data);
+                
+                // Redirecionar para o dashboard após 1 segundo
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                
+            } catch (error) {
+                showError('Erro ao fazer login: ' + error.message);
+            }
         }
         
         // Função de cadastro
-        if (signupButton) {
-            signupButton.addEventListener('click', async function() {
-                const name = document.getElementById('signup-name').value;
-                const email = document.getElementById('signup-email').value;
-                const password = document.getElementById('signup-password').value;
-                
-                if (!name || !email || !password) {
-                    showError('Por favor, preencha todos os campos.');
-                    return;
-                }
-                
-                try {
-                    console.log('Tentando cadastrar:', email);
-                    // Cadastrar usuário na autenticação do Supabase
-                    const { data: authData, error: authError } = await supabase.auth.signUp({
-                        email,
-                        password,
-                        options: {
-                            data: {
-                                name
-                            }
+        async function signup() {
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            
+            if (!name || !email || !password) {
+                showError('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            try {
+                console.log('Tentando cadastrar:', email);
+                // Cadastrar usuário na autenticação do Supabase
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            name
                         }
-                    });
-                    
-                    if (authError) {
-                        console.error('Erro de cadastro:', authError);
-                        throw authError;
                     }
-                    
-                    console.log('Cadastro na autenticação bem-sucedido:', authData);
-                    
-                    // Criar registro na tabela usuarios
-                    const { error: dbError } = await supabase
-                        .from('usuarios')
-                        .insert([
-                            { 
-                                email, 
-                                nome: name,
-                                nivel: 1,
-                                xp_total: 0,
-                                elemento_fogo: 0,
-                                elemento_terra: 0,
-                                elemento_agua: 0,
-                                elemento_ar: 0,
-                                etapa_atual: 1
-                            }
-                        ]);
-                    
-                    if (dbError) {
-                        console.error('Erro ao inserir no banco:', dbError);
-                        throw dbError;
-                    }
-                    
-                    // Cadastro bem-sucedido
-                    showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
-                    
-                    // Mostrar formulário de login após 2 segundos
-                    setTimeout(() => {
-                        signupForm.style.display = 'none';
-                        loginForm.style.display = 'block';
-                    }, 2000);
-                    
-                } catch (error) {
-                    showError('Erro ao cadastrar: ' + error.message);
+                });
+                
+                if (authError) {
+                    console.error('Erro de cadastro:', authError);
+                    throw authError;
                 }
-            });
-        } else {
-            console.error('Elemento signup-button não encontrado');
+                
+                console.log('Cadastro na autenticação bem-sucedido:', authData);
+                
+                // Criar registro na tabela usuarios
+                const { error: dbError } = await supabase
+                    .from('usuarios')
+                    .insert([
+                        { 
+                            email, 
+                            nome: name,
+                            nivel: 1,
+                            xp_total: 0,
+                            elemento_fogo: 0,
+                            elemento_terra: 0,
+                            elemento_agua: 0,
+                            elemento_ar: 0,
+                            etapa_atual: 1
+                        }
+                    ]);
+                
+                if (dbError) {
+                    console.error('Erro ao inserir no banco:', dbError);
+                    throw dbError;
+                }
+                
+                // Cadastro bem-sucedido
+                showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
+                
+                // Mostrar formulário de login após 2 segundos
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+                
+            } catch (error) {
+                showError('Erro ao cadastrar: ' + error.message);
+            }
         }
         
         // Funções auxiliares
         function showError(message) {
+            const errorMessage = document.getElementById('error-message');
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
             console.error(message);
         }
         
         function showSuccess(message) {
+            const successMessage = document.getElementById('success-message');
             successMessage.textContent = message;
             successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
             console.log(message);
         }
         
