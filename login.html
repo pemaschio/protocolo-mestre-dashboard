@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <!-- Outras tags head -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Configuração do Supabase diretamente no login.html
+        const SUPABASE_URL = 'https://dzwnapxqzbzkgyfuosmx.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
+        const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
+    </script>
+</head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Protocolo Mestre</title>
@@ -214,146 +224,163 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
         const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
 
-        
-        // Elementos do DOM
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const showSignup = document.getElementById('show-signup');
-        const showLogin = document.getElementById('show-login');
-        const loginButton = document.getElementById('login-button');
-        const signupButton = document.getElementById('signup-button');
-        const errorMessage = document.getElementById('error-message');
-        const successMessage = document.getElementById('success-message');
-        
-        // Alternar entre formulários
-        showSignup.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            signupForm.style.display = 'block';
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
+     // Elementos do DOM
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const showSignup = document.getElementById('show-signup');
+const showLogin = document.getElementById('show-login');
+const loginButton = document.getElementById('login-button');
+const signupButton = document.getElementById('signup-button');
+const errorMessage = document.getElementById('error-message');
+const successMessage = document.getElementById('success-message');
+
+// Alternar entre formulários
+showSignup.addEventListener('click', () => {
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+});
+
+showLogin.addEventListener('click', () => {
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+});
+
+// Função de login
+loginButton.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    if (!email || !password) {
+        showError('Por favor, preencha todos os campos.');
+        return;
+    }
+    
+    try {
+        console.log('Tentando fazer login com:', email);
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
         });
         
-        showLogin.addEventListener('click', () => {
+        if (error) {
+            console.error('Erro de login:', error);
+            throw error;
+        }
+        
+        // Login bem-sucedido
+        showSuccess('Login realizado com sucesso! Redirecionando...');
+        console.log('Login bem-sucedido:', data);
+        
+        // Redirecionar para o dashboard após 1 segundo
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
+        
+    } catch (error) {
+        showError('Erro ao fazer login: ' + error.message);
+    }
+});
+
+// Função de cadastro
+signupButton.addEventListener('click', async () => {
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    
+    if (!name || !email || !password) {
+        showError('Por favor, preencha todos os campos.');
+        return;
+    }
+    
+    try {
+        console.log('Tentando cadastrar:', email);
+        // Cadastrar usuário na autenticação do Supabase
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    name
+                }
+            }
+        });
+        
+        if (authError) {
+            console.error('Erro de cadastro:', authError);
+            throw authError;
+        }
+        
+        console.log('Cadastro na autenticação bem-sucedido:', authData);
+        
+        // Criar registro na tabela usuarios
+        const { error: dbError } = await supabase
+            .from('usuarios')
+            .insert([
+                { 
+                    email, 
+                    nome: name,
+                    nivel: 1,
+                    xp_total: 0,
+                    elemento_fogo: 0,
+                    elemento_terra: 0,
+                    elemento_agua: 0,
+                    elemento_ar: 0,
+                    etapa_atual: 1
+                }
+            ]);
+        
+        if (dbError) {
+            console.error('Erro ao inserir no banco:', dbError);
+            throw dbError;
+        }
+        
+        // Cadastro bem-sucedido
+        showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
+        
+        // Mostrar formulário de login após 2 segundos
+        setTimeout(() => {
             signupForm.style.display = 'none';
             loginForm.style.display = 'block';
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-        });
+        }, 2000);
         
-        // Função de login
-        loginButton.addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                showError('Por favor, preencha todos os campos.');
-                return;
-            }
-            
-            try {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email,
-                    password
-                });
-                
-                if (error) throw error;
-                
-                // Login bem-sucedido
-                showSuccess('Login realizado com sucesso! Redirecionando...');
-                
-                // Armazenar dados do usuário na sessão
-                localStorage.setItem('user', JSON.stringify(data.user));
-                
-                // Redirecionar para o dashboard após 1 segundo
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
-                
-            } catch (error) {
-                showError('Erro ao fazer login: ' + error.message);
-            }
-        });
+    } catch (error) {
+        showError('Erro ao cadastrar: ' + error.message);
+    }
+});
+
+// Funções auxiliares
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    successMessage.style.display = 'none';
+    console.error(message);
+}
+
+function showSuccess(message) {
+    successMessage.textContent = message;
+    successMessage.style.display = 'block';
+    errorMessage.style.display = 'none';
+    console.log(message);
+}
+
+// Verificar se o usuário já está logado
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
         
-        // Função de cadastro
-        signupButton.addEventListener('click', async () => {
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            
-            if (!name || !email || !password) {
-                showError('Por favor, preencha todos os campos.');
-                return;
-            }
-            
-            try {
-                // Cadastrar usuário na autenticação do Supabase
-                const { data: authData, error: authError } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            name
-                        }
-                    }
-                });
-                
-                if (authError) throw authError;
-                
-                // Criar registro na tabela usuarios
-                const { error: dbError } = await supabase
-                    .from('usuarios')
-                    .insert([
-                        { 
-                            email, 
-                            nome: name,
-                            nivel: 1,
-                            xp_total: 0,
-                            elemento_fogo: 0,
-                            elemento_terra: 0,
-                            elemento_agua: 0,
-                            elemento_ar: 0,
-                            etapa_atual: 1
-                        }
-                    ]);
-                
-                if (dbError) throw dbError;
-                
-                // Cadastro bem-sucedido
-                showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
-                
-                // Mostrar formulário de login após 2 segundos
-                setTimeout(() => {
-                    signupForm.style.display = 'none';
-                    loginForm.style.display = 'block';
-                }, 2000);
-                
-            } catch (error) {
-                showError('Erro ao cadastrar: ' + error.message);
-            }
-        });
-        
-        // Funções auxiliares
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
+        if (session) {
+            // Usuário já está logado, redirecionar para o dashboard
+            window.location.href = 'index.html';
         }
-        
-        function showSuccess(message) {
-            successMessage.textContent = message;
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-        }
-        
-        // Verificar se o usuário já está logado
-        window.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            if (session) {
-                // Usuário já está logado, redirecionar para o dashboard
-                window.location.href = 'index.html';
-            }
-        });
+    } catch (error) {
+        console.error('Erro ao verificar sessão:', error);
+    }
+});
+
     </script>
 </body>
 </html>
