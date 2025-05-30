@@ -1,3 +1,64 @@
+// Função para normalizar nomes de elementos
+function normalizeElementName(element) {
+    // Mapa de normalização
+    const elementMap = {
+        'fogo': 'fogo',
+        'terra': 'terra',
+        'agua': 'água',
+        'ar': 'ar',
+        'água': 'água'
+    };
+    
+    // Retorna o nome normalizado ou o original se não estiver no mapa
+    return elementMap[element.toLowerCase()] || element;
+}
+
+// Modificar a função updateUserInterface
+function updateUserInterface() {
+    if (!userData) return;
+    
+    // Código existente...
+    
+    // Atualizar elementos com nomes normalizados
+    document.querySelector('.element-fire .element-value').textContent = userData.elemento_fogo;
+    document.querySelector('.element-earth .element-value').textContent = userData.elemento_terra;
+    document.querySelector('.element-water .element-value').textContent = userData.elemento_agua;
+    document.querySelector('.element-air .element-value').textContent = userData.elemento_ar;
+    
+    // Código existente...
+}
+
+// Modificar a função updateMissionsInterface
+function updateMissionsInterface() {
+    // Código existente...
+    
+    // Adicionar cada missão
+    userMissions.forEach(mission => {
+        // Código existente...
+        
+        // Normalizar nome do elemento
+        const normalizedElement = normalizeElementName(mission.elemento);
+        
+        // Determinar ícone com base no elemento normalizado
+        let elementIcon = 'fa-fire';
+        if (normalizedElement === 'terra') elementIcon = 'fa-mountain';
+        if (normalizedElement === 'água') elementIcon = 'fa-water';
+        if (normalizedElement === 'ar') elementIcon = 'fa-wind';
+        
+        // Código existente...
+        
+        // Usar o nome normalizado na exibição
+        missionElement.innerHTML = `
+            <!-- Código existente -->
+            <span class="mission-element">${normalizedElement}</span>
+            <!-- Código existente -->
+        `;
+        
+        // Código existente...
+    });
+    
+    // Código existente...
+}
 // Variáveis globais para dados do usuário
 let userData = null;
 let userMissions = [];
