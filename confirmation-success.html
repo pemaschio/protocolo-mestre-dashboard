@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de E-mail - Protocolo Mestre</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #E9C46A;
+            --orange: #F4A261;
+            --blue-dark: #1D3557;
+            --blue-medium: #457B9D;
+            --blue-light: #A8DADC;
+            --completed: #2A9D8F;
+            --in-progress: #E9C46A;
+            --locked: #E76F51;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0F1A2B;
+            background-image: url('images/mountain.jpg');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .confirmation-container {
+            background-color: rgba(29, 53, 87, 0.8);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: var(--blue-light);
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: var(--completed);
+            margin-bottom: 20px;
+        }
+        
+        .login-button {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, var(--gold), var(--orange));
+            color: var(--blue-dark);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(233, 196, 106, 0.5);
+        }
+        
+        .velho-sabio {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        
+        .velho-sabio:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .confirmation-container {
+                padding: 30px;
+            }
+            
+            .velho-sabio {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <img src="logo.png" alt="Protocolo Mestre" class="logo">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h1>E-mail Confirmado com Sucesso!</h1>
+        <p>Parabéns! Seu e-mail foi confirmado e sua conta no Protocolo Mestre está ativa. Você agora tem acesso a todo o conteúdo exclusivo e à jornada guiada pelo Velho Sábio.</p>
+        <p>Clique no botão abaixo para fazer login e iniciar sua jornada de desenvolvimento pessoal.</p>
+        <a href="login.html" class="login-button">Acessar o Portal</a>
+    </div>
+    
+    <img src="images/velho-sabio.webp" alt="Velho Sábio" class="velho-sabio">
+    
+    <script>
+        // Script para redirecionar automaticamente após 5 minutos (opcional)
+        setTimeout(function() {
+            window.location.href = 'login.html';
+        }, 300000); // 300000 ms = 5 minutos
+    </script>
+</body>
+</html>
