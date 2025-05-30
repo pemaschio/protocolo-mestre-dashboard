@@ -7,72 +7,110 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Carregar Supabase primeiro -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        /* Estilos CSS mantidos iguais */
-        /* ... */
-    </style>
 </head>
 <body>
-    <!-- Conteúdo HTML mantido igual -->
+    <div style="background-color: rgba(29, 53, 87, 0.8 ); border-radius: 15px; padding: 40px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); width: 90%; max-width: 400px; text-align: center; margin: 50px auto;">
+        <h1 style="color: #E9C46A; margin-bottom: 30px;">Acesso ao Portal</h1>
+        
+        <!-- Formulário de Login -->
+        <div id="login-form">
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 8px; color: #A8DADC;">E-mail</label>
+                <input type="email" id="email" placeholder="Seu e-mail" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #457B9D; background-color: rgba(255, 255, 255, 0.1); color: white;">
+            </div>
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 8px; color: #A8DADC;">Senha</label>
+                <input type="password" id="password" placeholder="Sua senha" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #457B9D; background-color: rgba(255, 255, 255, 0.1); color: white;">
+            </div>
+            <button onclick="fazerLogin()" style="width: 100%; padding: 14px; border-radius: 8px; border: none; background: linear-gradient(135deg, #E9C46A, #F4A261); color: #1D3557; font-size: 16px; font-weight: bold; cursor: pointer;">Entrar</button>
+            <div style="margin-top: 20px; color: #A8DADC;">
+                Não tem uma conta? <a href="#" onclick="mostrarCadastro()" style="color: #E9C46A; text-decoration: none; cursor: pointer;">Cadastre-se</a>
+            </div>
+        </div>
+        
+        <!-- Formulário de Cadastro -->
+        <div id="signup-form" style="display: none;">
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 8px; color: #A8DADC;">Nome Completo</label>
+                <input type="text" id="signup-name" placeholder="Seu nome completo" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #457B9D; background-color: rgba(255, 255, 255, 0.1); color: white;">
+            </div>
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 8px; color: #A8DADC;">E-mail</label>
+                <input type="email" id="signup-email" placeholder="Seu e-mail" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #457B9D; background-color: rgba(255, 255, 255, 0.1); color: white;">
+            </div>
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 8px; color: #A8DADC;">Senha</label>
+                <input type="password" id="signup-password" placeholder="Crie uma senha" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #457B9D; background-color: rgba(255, 255, 255, 0.1); color: white;">
+            </div>
+            <button onclick="fazerCadastro()" style="width: 100%; padding: 14px; border-radius: 8px; border: none; background: linear-gradient(135deg, #E9C46A, #F4A261); color: #1D3557; font-size: 16px; font-weight: bold; cursor: pointer;">Cadastrar</button>
+            <div style="margin-top: 20px; color: #A8DADC;">
+                Já tem uma conta? <a href="#" onclick="mostrarLogin()" style="color: #E9C46A; text-decoration: none; cursor: pointer;">Faça login</a>
+            </div>
+        </div>
+        
+        <div id="error-message" style="color: #E76F51; margin-top: 20px; font-size: 14px; display: none;"></div>
+        <div id="success-message" style="color: #2A9D8F; margin-top: 20px; font-size: 14px; display: none;"></div>
+    </div>
     
     <script>
-        // Garantir que o Supabase seja inicializado primeiro
-        document.addEventListener('DOMContentLoaded', function( ) {
-            // Configuração do Supabase
+        // Inicializar Supabase globalmente
+        var supabaseClient;
+        
+        // Função para inicializar o Supabase
+        function inicializarSupabase() {
             const SUPABASE_URL = 'https://dzwnapxqzbzkgyfuosmx.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
             
-            // Inicializar o cliente Supabase
-            window.supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
-            
-            // Verificar se o usuário já está logado
-            checkSession();
-        });
-        
-        // Verificar sessão do usuário
-        async function checkSession() {
             try {
-                const { data: { session } } = await window.supabase.auth.getSession();
-                
-                if (session) {
-                    // Usuário já está logado, redirecionar para o dashboard
-                    window.location.href = 'index.html';
-                }
+                supabaseClient = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
+                console.log('Supabase inicializado com sucesso');
+                return true;
             } catch (error) {
-                console.error('Erro ao verificar sessão:', error);
+                console.error('Erro ao inicializar Supabase:', error);
+                mostrarErro('Erro ao inicializar sistema. Por favor, tente novamente mais tarde.');
+                return false;
             }
         }
         
+        // Inicializar Supabase quando a página carregar
+        window.onload = function() {
+            inicializarSupabase();
+        };
+        
         // Funções para alternar entre formulários
-        function showSignup() {
+        function mostrarCadastro() {
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('signup-form').style.display = 'block';
             document.getElementById('error-message').style.display = 'none';
             document.getElementById('success-message').style.display = 'none';
-            console.log('Mostrando formulário de cadastro');
         }
         
-        function showLogin() {
+        function mostrarLogin() {
             document.getElementById('signup-form').style.display = 'none';
             document.getElementById('login-form').style.display = 'block';
             document.getElementById('error-message').style.display = 'none';
             document.getElementById('success-message').style.display = 'none';
-            console.log('Mostrando formulário de login');
         }
         
         // Função de login
-        async function login() {
+        async function fazerLogin() {
+            if (!supabaseClient) {
+                if (!inicializarSupabase()) {
+                    return;
+                }
+            }
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
             if (!email || !password) {
-                showError('Por favor, preencha todos os campos.');
+                mostrarErro('Por favor, preencha todos os campos.');
                 return;
             }
             
             try {
                 console.log('Tentando fazer login com:', email);
-                const { data, error } = await window.supabase.auth.signInWithPassword({
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email,
                     password
                 });
@@ -83,7 +121,7 @@
                 }
                 
                 // Login bem-sucedido
-                showSuccess('Login realizado com sucesso! Redirecionando...');
+                mostrarSucesso('Login realizado com sucesso! Redirecionando...');
                 console.log('Login bem-sucedido:', data);
                 
                 // Redirecionar para o dashboard após 1 segundo
@@ -92,25 +130,31 @@
                 }, 1000);
                 
             } catch (error) {
-                showError('Erro ao fazer login: ' + error.message);
+                mostrarErro('Erro ao fazer login: ' + error.message);
             }
         }
         
         // Função de cadastro
-        async function signup() {
+        async function fazerCadastro() {
+            if (!supabaseClient) {
+                if (!inicializarSupabase()) {
+                    return;
+                }
+            }
+            
             const name = document.getElementById('signup-name').value;
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             
             if (!name || !email || !password) {
-                showError('Por favor, preencha todos os campos.');
+                mostrarErro('Por favor, preencha todos os campos.');
                 return;
             }
             
             try {
                 console.log('Tentando cadastrar:', email);
                 // Cadastrar usuário na autenticação do Supabase
-                const { data: authData, error: authError } = await window.supabase.auth.signUp({
+                const { data: authData, error: authError } = await supabaseClient.auth.signUp({
                     email,
                     password,
                     options: {
@@ -128,7 +172,7 @@
                 console.log('Cadastro na autenticação bem-sucedido:', authData);
                 
                 // Criar registro na tabela usuarios
-                const { error: dbError } = await window.supabase
+                const { error: dbError } = await supabaseClient
                     .from('usuarios')
                     .insert([
                         { 
@@ -150,20 +194,20 @@
                 }
                 
                 // Cadastro bem-sucedido
-                showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
+                mostrarSucesso('Cadastro realizado com sucesso! Você já pode fazer login.');
                 
                 // Mostrar formulário de login após 2 segundos
                 setTimeout(() => {
-                    showLogin();
+                    mostrarLogin();
                 }, 2000);
                 
             } catch (error) {
-                showError('Erro ao cadastrar: ' + error.message);
+                mostrarErro('Erro ao cadastrar: ' + error.message);
             }
         }
         
         // Funções auxiliares
-        function showError(message) {
+        function mostrarErro(message) {
             const errorMessage = document.getElementById('error-message');
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
@@ -171,7 +215,7 @@
             console.error(message);
         }
         
-        function showSuccess(message) {
+        function mostrarSucesso(message) {
             const successMessage = document.getElementById('success-message');
             successMessage.textContent = message;
             successMessage.style.display = 'block';
