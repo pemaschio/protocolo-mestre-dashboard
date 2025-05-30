@@ -19,36 +19,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocolo Mestre - Dashboard</title>
+    <title>Dashboard - Protocolo Mestre</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-additional.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Carregar Supabase ANTES do arquivo de configuração -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
 </head>
-<body><script>
-    // Verificação de autenticação imediata    (async function checkAuth() {
-        // Verificar se o Supabase está disponível
-        if (typeof supabase === 'undefined') {
-            console.error('Supabase não está definido. Verifique se supabase-config.js está carregado corretamente.');
-            window.location.href = 'login.html';
-            return;
-        }
-        
-        try {
-            // Tentar obter a sessão atual
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            if (!session) {
-                console.log('Usuário não autenticado, redirecionando para login...');
+
+<body>
+    <script>
+        // Verificação de autenticação imediata
+        (async function checkAuth() {
+            try {
+                // Tentar obter a sessão atual
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    console.log('Usuário não autenticado, redirecionando para login...');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                console.log('Usuário autenticado:', session.user.email);
+                // Carregar dados do usuário após autenticação bem-sucedida
+                loadUserData();
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
                 window.location.href = 'login.html';
-                return;
             }
-            
-            console.log('Usuário autenticado:', session.user.email);
-        } catch (error) {
-            console.error('Erro ao verificar autenticação:', error);
-            window.location.href = 'login.html';
-        }
-    })();
+        })();
 </script>
 
     <div class="dashboard">
