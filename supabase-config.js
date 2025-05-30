@@ -1,3 +1,3 @@
-const SUPABASE_URL = 'https://dzwnapxqzbzkgyfuosmx/settings/api-keys';
+const SUPABASE_URL = 'https://dzwnapxqzbzkgyfuosmx.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
