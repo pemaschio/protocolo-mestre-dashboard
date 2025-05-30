@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Protocolo Mestre</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Importar Supabase JS com versão específica e modo UMD -->
+    <!-- Importar Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
-    <!-- Mesmo CSS que antes... -->
     <style>
-        /* Estilos CSS mantidos iguais */
         :root {
             --gold: #E9C46A;
             --orange: #F4A261;
@@ -30,7 +28,7 @@
         
         body {
             background-color: #0F1A2B;
-            background-image: url('images/mountain.jpg' );
+            background-image: url('images/mountain.jpg');
             background-size: cover;
             background-position: center;
             background-blend-mode: overlay;
@@ -210,245 +208,223 @@
     </div>
     
     <img src="images/velho-sabio.webp" alt="Velho Sábio" class="velho-sabio">
-</body>
-
-<!-- Script separado e carregado no final para garantir que o DOM esteja completamente carregado -->
-<script>
-    // Variável global para o cliente Supabase
-    var supabaseClient = null;
     
-    // Função para inicializar o Supabase
-    function initSupabase() {
-        try {
-            // Verificar se o objeto supabase está disponível globalmente
-            if (typeof supabase !== 'undefined') {
-                const SUPABASE_URL = 'https://dzwnapxqzbzkgyfuosmx.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
-                
-                // Criar cliente Supabase
-                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
-                console.log('Cliente Supabase inicializado com sucesso');
-                return true;
-            } else {
-                console.error('Objeto supabase não está disponível');
+    <script>
+        // Garantir que o script só execute após o carregamento completo da página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, inicializando aplicação...');
+            
+            // Inicialização do Supabase - Certifique-se de substituir com suas credenciais reais
+            const SUPABASE_URL = 'https://dzwnapxqzbzkgyfuosmx.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6d25hcHhxemJ6a2d5ZnVvc214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1NTY1MjMsImV4cCI6MjA2NDEzMjUyM30.aPeQwlKbk08MdAOHxUysBVNwiv8UdjJlhvtX66Si-gw';
+            
+            // Verificar se o objeto supabase está disponível
+            if (typeof supabase === 'undefined') {
+                console.error('Biblioteca Supabase não carregada corretamente');
                 showError('Erro ao carregar biblioteca de autenticação. Por favor, recarregue a página.');
-                return false;
+                return;
             }
-        } catch (error) {
-            console.error('Erro ao inicializar Supabase:', error);
-            showError('Erro ao inicializar sistema. Por favor, tente novamente mais tarde.');
-            return false;
-        }
-    }
-    
-    // Função para verificar sessão do usuário
-    function checkSession() {
-        if (!supabaseClient) {
-            return;
-        }
-        
-        supabaseClient.auth.getSession()
-            .then(({ data: { session } }) => {
-                if (session) {
-                    console.log('Usuário já está logado, redirecionando...');
-                    window.location.href = 'index.html';
-                } else {
-                    console.log('Nenhuma sessão ativa encontrada');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao verificar sessão:', error);
-            });
-    }
-    
-    // Configurar alternância entre formulários
-    function setupFormToggle() {
-        const showSignupLink = document.getElementById('show-signup');
-        const showLoginLink = document.getElementById('show-login');
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const errorMessage = document.getElementById('error-message');
-        const successMessage = document.getElementById('success-message');
-        
-        if (showSignupLink) {
-            showSignupLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-                console.log('Mostrando formulário de cadastro');
-            });
-        }
-        
-        if (showLoginLink) {
-            showLoginLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                signupForm.style.display = 'none';
-                loginForm.style.display = 'block';
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-                console.log('Mostrando formulário de login');
-            });
-        }
-    }
-    
-    // Configurar handlers de autenticação
-    function setupAuthHandlers() {
-        if (!supabaseClient) {
-            return;
-        }
-        
-        const loginButton = document.getElementById('login-button');
-        const signupButton = document.getElementById('signup-button');
-        
-        if (loginButton) {
-            loginButton.addEventListener('click', function() {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
+            
+            try {
+                // Criar cliente Supabase
+                const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('Cliente Supabase inicializado com sucesso');
                 
-                if (!email || !password) {
-                    showError('Por favor, preencha todos os campos.');
-                    return;
-                }
+                // Verificar se o usuário já está logado
+                checkSession(supabaseClient);
                 
-                console.log('Tentando fazer login com:', email);
+                // Configurar alternância entre formulários
+                setupFormToggle();
                 
-                supabaseClient.auth.signInWithPassword({
-                    email,
-                    password
-                })
-                .then(({ data, error }) => {
-                    if (error) {
-                        console.error('Erro de login:', error);
-                        throw error;
-                    }
-                    
-                    // Login bem-sucedido
-                    showSuccess('Login realizado com sucesso! Redirecionando...');
-                    console.log('Login bem-sucedido:', data);
-                    
-                    // Redirecionar para o dashboard após 1 segundo
-                    setTimeout(() => {
+                // Configurar handlers de login e cadastro
+                setupAuthHandlers(supabaseClient);
+                
+            } catch (error) {
+                console.error('Erro ao inicializar Supabase:', error);
+                showError('Erro ao inicializar sistema. Por favor, tente novamente mais tarde.');
+            }
+        });
+        
+        // Verificar sessão do usuário
+        function checkSession(supabaseClient) {
+            supabaseClient.auth.getSession()
+                .then(({ data: { session } }) => {
+                    if (session) {
+                        console.log('Usuário já está logado, redirecionando...');
                         window.location.href = 'index.html';
-                    }, 1000);
+                    } else {
+                        console.log('Nenhuma sessão ativa encontrada');
+                    }
                 })
                 .catch(error => {
-                    showError('Erro ao fazer login: ' + error.message);
+                    console.error('Erro ao verificar sessão:', error);
                 });
-            });
         }
         
-        if (signupButton) {
-            signupButton.addEventListener('click', function() {
-                const name = document.getElementById('signup-name').value;
-                const email = document.getElementById('signup-email').value;
-                const password = document.getElementById('signup-password').value;
-                
-                if (!name || !email || !password) {
-                    showError('Por favor, preencha todos os campos.');
-                    return;
-                }
-                
-                console.log('Tentando cadastrar:', email);
-                
-                // Cadastrar usuário na autenticação do Supabase
-                supabaseClient.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            name
+        // Configurar alternância entre formulários
+        function setupFormToggle() {
+            const showSignupLink = document.getElementById('show-signup');
+            const showLoginLink = document.getElementById('show-login');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            
+            if (showSignupLink) {
+                showSignupLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loginForm.style.display = 'none';
+                    signupForm.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    successMessage.style.display = 'none';
+                    console.log('Mostrando formulário de cadastro');
+                });
+            }
+            
+            if (showLoginLink) {
+                showLoginLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    signupForm.style.display = 'none';
+                    loginForm.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    successMessage.style.display = 'none';
+                    console.log('Mostrando formulário de login');
+                });
+            }
+        }
+        
+        // Configurar handlers de autenticação
+        function setupAuthHandlers(supabaseClient) {
+            const loginButton = document.getElementById('login-button');
+            const signupButton = document.getElementById('signup-button');
+            
+            if (loginButton) {
+                loginButton.addEventListener('click', function() {
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    
+                    if (!email || !password) {
+                        showError('Por favor, preencha todos os campos.');
+                        return;
+                    }
+                    
+                    console.log('Tentando fazer login com:', email);
+                    
+                    supabaseClient.auth.signInWithPassword({
+                        email,
+                        password
+                    })
+                    .then(({ data, error }) => {
+                        if (error) {
+                            console.error('Erro de login:', error);
+                            throw error;
                         }
-                    }
-                })
-                .then(({ data: authData, error: authError }) => {
-                    if (authError) {
-                        console.error('Erro de cadastro:', authError);
-                        throw authError;
-                    }
-                    
-                    console.log('Cadastro na autenticação bem-sucedido:', authData);
-                    
-                    // Criar registro na tabela usuarios
-                    return supabaseClient
-                        .from('usuarios')
-                        .insert([
-                            { 
-                                email, 
-                                nome: name,
-                                nivel: 1,
-                                xp_total: 0,
-                                elemento_fogo: 0,
-                                elemento_terra: 0,
-                                elemento_agua: 0,
-                                elemento_ar: 0,
-                                etapa_atual: 1
-                            }
-                        ]);
-                })
-                .then(({ error: dbError }) => {
-                    if (dbError) {
-                        console.error('Erro ao inserir no banco:', dbError);
-                        throw dbError;
-                    }
-                    
-                    // Cadastro bem-sucedido
-                    showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
-                    
-                    // Mostrar formulário de login após 2 segundos
-                    setTimeout(() => {
-                        document.getElementById('signup-form').style.display = 'none';
-                        document.getElementById('login-form').style.display = 'block';
-                    }, 2000);
-                })
-                .catch(error => {
-                    showError('Erro ao cadastrar: ' + error.message);
+                        
+                        // Login bem-sucedido
+                        showSuccess('Login realizado com sucesso! Redirecionando...');
+                        console.log('Login bem-sucedido:', data);
+                        
+                        // Redirecionar para o dashboard após 1 segundo
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    })
+                    .catch(error => {
+                        showError('Erro ao fazer login: ' + error.message);
+                    });
                 });
-            });
+            }
+            
+            if (signupButton) {
+                signupButton.addEventListener('click', function() {
+                    const name = document.getElementById('signup-name').value;
+                    const email = document.getElementById('signup-email').value;
+                    const password = document.getElementById('signup-password').value;
+                    
+                    if (!name || !email || !password) {
+                        showError('Por favor, preencha todos os campos.');
+                        return;
+                    }
+                    
+                    console.log('Tentando cadastrar:', email);
+                    
+                    // Cadastrar usuário na autenticação do Supabase
+                    supabaseClient.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                name
+                            }
+                        }
+                    })
+                    .then(({ data: authData, error: authError }) => {
+                        if (authError) {
+                            console.error('Erro de cadastro:', authError);
+                            throw authError;
+                        }
+                        
+                        console.log('Cadastro na autenticação bem-sucedido:', authData);
+                        
+                        // Criar registro na tabela usuarios
+                        return supabaseClient
+                            .from('usuarios')
+                            .insert([
+                                { 
+                                    email, 
+                                    nome: name,
+                                    nivel: 1,
+                                    xp_total: 0,
+                                    elemento_fogo: 0,
+                                    elemento_terra: 0,
+                                    elemento_agua: 0,
+                                    elemento_ar: 0,
+                                    etapa_atual: 1
+                                }
+                            ]);
+                    })
+                    .then(({ error: dbError }) => {
+                        if (dbError) {
+                            console.error('Erro ao inserir no banco:', dbError);
+                            throw dbError;
+                        }
+                        
+                        // Cadastro bem-sucedido
+                        showSuccess('Cadastro realizado com sucesso! Você já pode fazer login.');
+                        
+                        // Mostrar formulário de login após 2 segundos
+                        setTimeout(() => {
+                            document.getElementById('signup-form').style.display = 'none';
+                            document.getElementById('login-form').style.display = 'block';
+                        }, 2000);
+                    })
+                    .catch(error => {
+                        showError('Erro ao cadastrar: ' + error.message);
+                    });
+                });
+            }
         }
-    }
-    
-    // Funções auxiliares
-    function showError(message) {
-        const errorMessage = document.getElementById('error-message');
-        if (errorMessage) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            document.getElementById('success-message').style.display = 'none';
-            console.error(message);
-        }
-    }
-    
-    function showSuccess(message) {
-        const successMessage = document.getElementById('success-message');
-        if (successMessage) {
-            successMessage.textContent = message;
-            successMessage.style.display = 'block';
-            document.getElementById('error-message').style.display = 'none';
-            console.log(message);
-        }
-    }
-    
-    // Inicialização da aplicação
-    function initApp() {
-        console.log('Iniciando aplicação...');
         
-        // Tentar inicializar o Supabase
-        if (initSupabase()) {
-            // Se inicialização bem-sucedida, configurar o restante da aplicação
-            checkSession();
-            setupFormToggle();
-            setupAuthHandlers();
+        // Funções auxiliares
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                document.getElementById('success-message').style.display = 'none';
+                console.error(message);
+            }
         }
-    }
-    
-    // Garantir que o script só execute após o carregamento completo da página
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        // Se o DOM já estiver carregado, iniciar imediatamente
-        initApp();
-    }
-</script>
+        
+        function showSuccess(message) {
+            const successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+                console.log(message);
+            }
+        }
+    </script>
+</body>
 </html>
